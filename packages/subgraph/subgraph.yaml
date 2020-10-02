@@ -1,0 +1,5 @@
+specVersion: 0.0.2
+description: BetterDeposits subgraph
+schema:
+  file: ./schema.graphql
+dataSources:

@@ -1,0 +1,35 @@
+{
+  "name": "delegated-withdrawals",
+  "version": "0.0.0",
+  "description": "Monorepo for Delegated Withdrawals",
+  "main": "index.js",
+  "repository": "https://github.com/hack-money/delegated-withdrawals.git",
+  "contributors": [
+    {
+      "name": "Tom French",
+      "url": "https://github.com/tomafrench"
+    },
+    {
+      "name": "Tom Waite",
+      "url": "https://github.com/thomas-waite"
+    }
+  ],
+  "license": "Unlicensed",
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf node_modules && rm -rf ./packages/*/node_modules",
+    "compile": "tsc -p tsconfig.build.json"
+  },
+  "dependencies": {
+    "lerna": "^3.22.1"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/protocol/",
+      "**/protocol/**"
+    ]
+  }
+}

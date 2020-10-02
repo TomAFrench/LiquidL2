@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./packages",
+    "paths": {
+      "@betterdeposits/app": ["./app/src"],
+      "@betterdeposits/contracts": ["./contracts/src"],
+      "@betterdeposits/*": ["*/src"]
+    }
+  },
+  "extends": "./tsconfig.build.json"
+}
