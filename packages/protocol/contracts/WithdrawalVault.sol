@@ -42,7 +42,7 @@ contract WithdrawalVault is Ownable {
     require(asset.transfer(borrower, asset.balanceOf(address(this))), "Transfer of remaining tokens failed");
   }
 
-  function claimFunds (IERC20 asset, bytes calldata withdrawalProof) external returns (uint256 withdrawalAmount) {
+  function claimFunds (IERC20 asset, bytes calldata withdrawalProof) external onlyOwner returns (uint256 withdrawalAmount) {
     uint256 balanceBefore = asset.balanceOf(address(this));
     // claim funds from RootChainManager to be sent to this address
   
