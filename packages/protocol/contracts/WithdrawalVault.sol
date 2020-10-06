@@ -1,5 +1,6 @@
 pragma solidity 0.7.1;
 
+import { SafeMath } from '@openzeppelin/contracts/math/SafeMath.sol';
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 
 import { IERC20 } from '@openzeppelin/contracts/token/ERC20/IERC20.sol';
@@ -8,6 +9,7 @@ import { IAaveCollateralVaultProxy } from './interfaces/IAaveCollateralVaultProx
 import { IWithdrawalVaultFactory } from './interfaces/IWithdrawalVaultFactory.sol';
 
 contract WithdrawalVault is Ownable {
+  using SafeMath for uint256;
 
   address public immutable borrower;
   IAaveCollateralVaultProxy public immutable aaveCollateralVaultProxy;
@@ -42,7 +44,11 @@ contract WithdrawalVault is Ownable {
     require(asset.transfer(borrower, asset.balanceOf(address(this))), "Transfer of remaining tokens failed");
   }
 
-  function claimFunds (bytes calldata withdrawalProof) external {
+  function claimFunds (IERC20 asset, bytes calldata withdrawalProof) external returns (uint256 withdrawalAmount) {
+    uint256 balanceBefore = asset.balanceOf(address(this));
     // claim funds from RootChainManager to be sent to this address
+  
+    withdrawalAmount = asset.balanceOf(address(this)).sub(balanceBefore);
+    require(withdrawalAmount > 0, "Withdrawal is of incorrect asset.");
   }
 }
