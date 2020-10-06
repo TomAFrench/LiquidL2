@@ -73,8 +73,7 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
     * @param amount the size of the loan 
     */
   function giveLoan(address vaultAddress, address asset, uint amount) onlyOwner onLayer1 external override {
-    address collateralVault = collateralVaults[asset];
-    aaveCollateralVaultProxy.increaseLimit(collateralVault, vaultAddress, amount);
+    aaveCollateralVaultProxy.increaseLimit(collateralVaults[asset], vaultAddress, amount);
   }
 
   /**
