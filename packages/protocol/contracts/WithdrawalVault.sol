@@ -32,13 +32,13 @@ contract WithdrawalVault is Ownable {
     asset.withdraw(amount);
   }
 
-  function repayLoan(IERC20 asset, address collateralVault) external onlyOwner {
-
-    // TODO: Relax assumption on total payment. Vault could have multiple withdrawals in progress
-
+  function repayLoan(IERC20 asset, address collateralVault, uint256 amount) external onlyOwner {
+    // Only repay up to the amount borrowed
+    uint256 repaymentAmount = amount < loans[address(asset)] ? amount : loans[address(asset)];
+    
     // pay off borrowed balance from collateralVault
-    aaveCollateralVaultProxy.repay(collateralVault, address(asset), loans[address(asset)]);
-    loans[address(asset)] = 0;
+    aaveCollateralVaultProxy.repay(collateralVault, address(asset), repaymentAmount);
+    loans[address(asset)] = loans[address(asset)].sub(repaymentAmount);
 
     // send any remaining funds to the borrower
     require(asset.transfer(borrower, asset.balanceOf(address(this))), "Transfer of remaining tokens failed");

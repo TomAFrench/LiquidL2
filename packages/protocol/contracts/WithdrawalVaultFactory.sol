@@ -90,9 +90,10 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
     // submit withdrawalProof so that funds get credited to vault
     uint256 amount = vault.claimFunds(asset, withdrawalProof);
     
-    address lendingCollateralVault = collateralVaults[address(asset)];
-    vault.repayLoan(asset, lendingCollateralVault);
 
+    // repay any debt and refund any remaining funds to borrower
+    address lendingCollateralVault = collateralVaults[address(asset)];
+    vault.repayLoan(asset, lendingCollateralVault, amount);
 
     // reduce the credit limit for the vault
     aaveCollateralVaultProxy.decreaseLimit(lendingCollateralVault, address(vault), amount);
