@@ -1,29 +1,48 @@
+pragma solidity 0.7.1;
 
+import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 
-contract WithdrawalVault {
+import { IERC20 } from '@openzeppelin/contracts/token/ERC20/IERC20.sol';
+import { IChildERC20 } from './interfaces/IChildERC20.sol';
+import { IAaveCollateralVaultProxy } from './interfaces/IAaveCollateralVaultProxy.sol';
+import { IWithdrawalVaultFactory } from './interfaces/IWithdrawalVaultFactory.sol';
 
-  address public borrower;
-  address public asset;
+contract WithdrawalVault is Ownable {
 
-  constructor (address borrower, address asset) {
+  address public immutable borrower;
+  IAaveCollateralVaultProxy public immutable aaveCollateralVaultProxy;
+  mapping(address => uint256) public loans;
+
+  constructor (address _borrower, IAaveCollateralVaultProxy _aaveCollateralVaultProxy ) {
+    borrower = _borrower;
+    aaveCollateralVaultProxy = _aaveCollateralVaultProxy;
   }
 
-  function repayLoan(address asset, uint amount) {
+  /**
+    * @notice Collects funds from borrower and burns them to initiate a withdrawal to Ethereum.
+    * @param asset - the asset which is to be burnt
+    * @param amount - the amount of this asset to be burnt
+    */
+  function exitFunds(IChildERC20 asset, uint256 amount) external onlyOwner { 
+    asset.transferFrom(borrower, address(this), amount);
 
-    // create2 a vault from msg.sender and asset if doesn't exist
-
-    // call withdraw on vault and send funds to msg.sender
-
+    // require(asset.transferFrom(borrower, address(this), amount), "Transfer of tokens failed");
+    asset.withdraw(amount);
   }
 
-  function claimL2Funds(bytes withdrawalProof) {
+  function repayLoan(IERC20 asset, address collateralVault) external onlyOwner {
 
-    // get vault address from borrower and asset if doesn't exist
+    // TODO: Relax assumption on total payment. Vault could have multiple withdrawals in progress
 
-    // submit withdrawalProof so that funds get credited to vault
+    // pay off borrowed balance from collateralVault
+    aaveCollateralVaultProxy.repay(collateralVault, address(asset), loans[address(asset)]);
+    loans[address(asset)] = 0;
 
-    // call repay on vault to free up credit limit
-
+    // send any remaining funds to the borrower
+    require(asset.transfer(borrower, asset.balanceOf(address(this))), "Transfer of remaining tokens failed");
   }
 
+  function claimFunds (bytes calldata withdrawalProof) external {
+    // claim funds from RootChainManager to be sent to this address
+  }
 }

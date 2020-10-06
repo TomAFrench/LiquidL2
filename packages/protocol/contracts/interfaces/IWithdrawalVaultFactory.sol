@@ -1,0 +1,50 @@
+pragma solidity 0.7.1;
+
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+import { Create2 } from "@openzeppelin/contracts/utils/Create2.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { IChildERC20 } from "./IChildERC20.sol";
+
+import { IAaveCollateralVaultProxy } from "./IAaveCollateralVaultProxy.sol";
+import { IRootChainManager } from "./IRootChainManager.sol";
+
+interface IWithdrawalVaultFactory {
+    /**
+     * @notice Deposit funds into a collateralVault to be used to back loans.
+     * @param asset the asset which is to be deposited
+     * @param amount the amount of this asset to be deposited
+     */
+    function exitFunds(IChildERC20 asset, uint256 amount) external;
+
+    /**
+     * @notice Deposit funds into a collateralVault to be used to back loans.
+     * @param asset the asset which is to be deposited
+     * @param amount the amount of this asset to be deposited
+     */
+    function depositCollateral(IERC20 asset, uint256 amount) external;
+
+    /**
+     * @notice Increase the credit limit of the supplied address by given amount
+     * @param vaultAddress the address of the vault to be given an increased credit limit
+     * @param asset the asset in which the loan is denominated
+     * @param amount the size of the loan
+     */
+    function giveLoan(
+        address vaultAddress,
+        address asset,
+        uint256 amount
+    ) external;
+
+    /**
+     * @notice Finalise a withdrawal from L2 and use funds to repay the vaults loan
+     * @dev This must be able to be called by anyone such that lenders' funds can't be locked.
+     * @param borrower the address of borrower who's loan is to be repaid
+     * @param asset the asset in which the loan is denominated
+     * @param withdrawalProof the proof to withdraw funds from layer 2 to the vault
+     */
+    function repayLoan(
+        address borrower,
+        IERC20 asset,
+        bytes calldata withdrawalProof
+    ) external;
+}
