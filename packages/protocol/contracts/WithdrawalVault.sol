@@ -30,6 +30,11 @@ contract WithdrawalVault is Ownable {
     asset.withdraw(amount);
   }
 
+  /**
+    * @param asset - the asset which denominates the loan which is to be repaid
+    * @param collateralVault - the address which has given this vault the loan
+    * @param amount - the amount of asset which the loan is going to use to repay the loan
+    */
   function repayLoan(IERC20 asset, address collateralVault, uint256 amount) external onlyOwner {
     // Only repay up to the amount borrowed
     uint256 repaymentAmount = amount < loans[address(asset)] ? amount : loans[address(asset)];
@@ -42,6 +47,11 @@ contract WithdrawalVault is Ownable {
     require(asset.transfer(borrower, asset.balanceOf(address(this))), "Transfer of remaining tokens failed");
   }
 
+  /**
+    * @param asset - the asset which is to be claimed from the rootChainManager
+    * @param withdrawalProof - the proof object which allows the WithdrawalVault to claim funds from the rootChainManager
+    * @return withdrawalAmount - the amount of asset which the vault has gained through the withdrawal
+    */
   function claimFunds (IERC20 asset, bytes calldata withdrawalProof) external onlyOwner returns (uint256 withdrawalAmount) {
     uint256 balanceBefore = asset.balanceOf(address(this));
     // claim funds from RootChainManager to be sent to this address
