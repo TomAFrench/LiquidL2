@@ -26,9 +26,7 @@ contract WithdrawalVault is Ownable {
     * @param amount - the amount of this asset to be burnt
     */
   function exitFunds(IChildERC20 asset, uint256 amount) external onlyOwner { 
-    asset.transferFrom(borrower, address(this), amount);
-
-    // require(asset.transferFrom(borrower, address(this), amount), "Transfer of tokens failed");
+    require(asset.transferFrom(borrower, address(this), amount), "Transfer of tokens failed");
     asset.withdraw(amount);
   }
 
