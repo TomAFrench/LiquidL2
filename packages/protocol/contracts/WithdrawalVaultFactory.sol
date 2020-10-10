@@ -18,6 +18,8 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
   bool public immutable layer1;
   mapping(address => address) public collateralVaults;
 
+  event Withdrawal(address indexed vault, address indexed token, uint256 amount);
+
   modifier onLayer1 {
     require(layer1, "Function not available on layer 2");
     _;
@@ -48,6 +50,7 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
     // create2 a vault from msg.sender if doesn't exist already
     WithdrawalVault vault = WithdrawalVault(maybeMakeVault(msg.sender));
     vault.exitFunds(asset, amount);
+    emit Withdrawal(address(vault), address(asset), amount);
   }
 
   /**
