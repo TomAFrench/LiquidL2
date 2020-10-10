@@ -18,10 +18,6 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
   bool public immutable layer1;
   mapping(address => address) public collateralVaults;
 
-  event GiveLoan(address indexed vault, address indexed token, uint256 amount);
-  event RepayLoan(address indexed vault, address indexed token, uint256 withdrawalAmount, uint256 loanRepayment);
-  event Withdrawal(address indexed vault, address indexed token, uint256 amount);
-
   modifier onLayer1 {
     require(layer1, "Function not available on layer 2");
     _;
