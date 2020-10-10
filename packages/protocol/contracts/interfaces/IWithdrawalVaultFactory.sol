@@ -48,6 +48,13 @@ interface IWithdrawalVaultFactory {
     ) external;
 
     /**
+     * @notice Draw funds against a vaults credit limit
+     * @param asset the asset of which to borrow
+     * @param amount the size of the loan
+     */
+    function borrow(IERC20 asset, uint256 amount) external;
+
+    /**
      * @notice Finalise a withdrawal from L2 and use funds to repay the vaults loan
      * @dev This must be able to be called by anyone such that lenders' funds can't be locked.
      * @param borrower the address of borrower who's loan is to be repaid

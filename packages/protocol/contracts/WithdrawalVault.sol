@@ -30,6 +30,19 @@ contract WithdrawalVault is Ownable {
   }
 
   /**
+    * @param asset - the asset which is to be borrowed
+    * @param collateralVault - the address which has given this vault the loan
+    * @param amount - the amount of asset which the loan is going to borrow
+    */
+  function borrow(IERC20 asset, IAaveCollateralVaultProxy aaveCollateralVaultProxy, address collateralVault, uint256 amount) external onlyOwner {  
+    aaveCollateralVaultProxy.borrow(collateralVault, address(asset), amount);
+    loans[address(asset)] = loans[address(asset)].add(amount);
+
+    // send funds to the borrower
+    require(asset.transfer(borrower, amount), "Transfer of tokens failed");
+  }
+
+  /**
     * @param asset - the asset which denominates the loan which is to be repaid
     * @param collateralVault - the address which has given this vault the loan
     * @param amount - the amount of asset which the loan is going to use to repay the loan
