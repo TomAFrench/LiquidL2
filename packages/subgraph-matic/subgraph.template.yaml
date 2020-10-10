@@ -62,5 +62,5 @@ templates:
           file: ./abis/ChildToken.json
       entities:
         - Withdrawal
-      file: ./src/mappings/tokens.ts
+      file: ./src/mappings/empty.ts
       language: wasm/assemblyscript
