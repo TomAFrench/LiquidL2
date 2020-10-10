@@ -3,6 +3,7 @@ pragma solidity 0.7.1;
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import { Create2 } from "@openzeppelin/contracts/utils/Create2.sol";
 import { IERC20 } from '@openzeppelin/contracts/token/ERC20/IERC20.sol';
+import { IAToken } from './interfaces/IAToken.sol';
 import { IChildERC20 } from './interfaces/IChildERC20.sol';
 
 import { IAaveCollateralVaultProxy } from './interfaces/IAaveCollateralVaultProxy.sol';
@@ -16,6 +17,7 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
   IAaveCollateralVaultProxy public immutable aaveCollateralVaultProxy;
   IRootChainManager public immutable maticRootChainManager;
   bool public immutable layer1;
+  // collateralVaults are indexed by the asset which they lend. i.e. USDC rather than aUSDC
   mapping(address => address) public collateralVaults;
 
   modifier onLayer1 {
@@ -53,13 +55,14 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
 
   /**
     * @notice Deposit funds into a collateralVault to be used to back loans.
-    * @param asset the asset which is to be deposited
+    * @param asset the address of the aToken asset which is to be deposited
     * @param amount the amount of this asset to be deposited
     */
-  function depositCollateral(IERC20 asset, uint amount) onlyOwner onLayer1 external override {
-    address collateralVault = collateralVaults[address(asset)];
+  function depositCollateral(IAToken asset, uint amount) onlyOwner onLayer1 external override {
+    address underlying = asset.underlyingAssetAddress();
+    address collateralVault = collateralVaults[underlying];
     if (collateralVault == address(0)){
-      collateralVaults[address(asset)] = aaveCollateralVaultProxy.deployVault(address(asset));
+      collateralVaults[underlying] = aaveCollateralVaultProxy.deployVault(underlying);
     }
 
     asset.transferFrom(msg.sender, address(this), amount);

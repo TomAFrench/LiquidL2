@@ -3,6 +3,7 @@ pragma solidity 0.7.1;
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { Create2 } from "@openzeppelin/contracts/utils/Create2.sol";
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { IAToken } from "./IAToken.sol";
 import { IChildERC20 } from "./IChildERC20.sol";
 
 import { IAaveCollateralVaultProxy } from "./IAaveCollateralVaultProxy.sol";
@@ -25,7 +26,7 @@ interface IWithdrawalVaultFactory {
      * @param asset the asset which is to be deposited
      * @param amount the amount of this asset to be deposited
      */
-    function depositCollateral(IERC20 asset, uint256 amount) external;
+    function depositCollateral(IAToken asset, uint256 amount) external;
 
     /**
      * @notice Increase the credit limit of the supplied address by given amount
