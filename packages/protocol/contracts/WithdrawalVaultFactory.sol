@@ -16,10 +16,13 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
 
   IAaveCollateralVaultProxy public immutable aaveCollateralVaultProxy;
   IRootChainManager public immutable maticRootChainManager;
-  bool public immutable layer1;
+  
   // collateralVaults are indexed by the asset which they lend. i.e. USDC rather than aUSDC
   mapping(address => address) public collateralVaults;
 
+  // WithdrawalVaultFactory will be deployed on both layers 1 and 2.
+  // We then have a flag to prevent functions being called on the wrong chain
+  bool public immutable layer1;
   modifier onLayer1 {
     require(layer1, "Function not available on layer 2");
     _;
@@ -137,5 +140,4 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
     }
     return vaultAddress;
   }
-
 }
