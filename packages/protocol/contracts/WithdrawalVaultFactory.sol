@@ -108,6 +108,7 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
     // Calculate the address of the borrower's vault
     WithdrawalVault vault = maybeMakeVault(msg.sender);
     vault.borrow(asset, aaveCollateralVaultProxy, collateralVault, amount);
+    emit Borrow(address(vault), address(asset), amount);
   }
 
   /**

@@ -11,6 +11,7 @@ import { IRootChainManager } from "./IRootChainManager.sol";
 
 interface IWithdrawalVaultFactory {
     event GiveLoan(address indexed vault, address indexed token, uint256 amount);
+    event Borrow(address indexed vault, address indexed token, uint256 amount);
     event RepayLoan(address indexed vault, address indexed token, uint256 withdrawalAmount, uint256 loanRepayment);
     event Withdrawal(address indexed vault, address indexed token, uint256 amount);
 
