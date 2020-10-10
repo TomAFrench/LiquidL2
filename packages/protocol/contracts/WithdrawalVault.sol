@@ -35,9 +35,9 @@ contract WithdrawalVault is Ownable {
     * @param collateralVault - the address which has given this vault the loan
     * @param amount - the amount of asset which the loan is going to use to repay the loan
     */
-  function repayLoan(IERC20 asset, address collateralVault, uint256 amount) external onlyOwner {
+  function repayLoan(IERC20 asset, address collateralVault, uint256 amount) external onlyOwner returns (uint256 repaymentAmount){
     // Only repay up to the amount borrowed
-    uint256 repaymentAmount = amount < loans[address(asset)] ? amount : loans[address(asset)];
+    repaymentAmount = amount < loans[address(asset)] ? amount : loans[address(asset)];
     
     // pay off borrowed balance from collateralVault
     aaveCollateralVaultProxy.repay(collateralVault, address(asset), repaymentAmount);

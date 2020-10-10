@@ -19,6 +19,7 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
   mapping(address => address) public collateralVaults;
 
   event GiveLoan(address indexed vault, address indexed token, uint256 amount);
+  event RepayLoan(address indexed vault, address indexed token, uint256 withdrawalAmount, uint256 loanRepayment);
   event Withdrawal(address indexed vault, address indexed token, uint256 amount);
 
   modifier onLayer1 {
@@ -98,10 +99,11 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
 
     // repay any debt and refund any remaining funds to borrower
     address lendingCollateralVault = collateralVaults[address(asset)];
-    vault.repayLoan(asset, lendingCollateralVault, amount);
+    uint256 loanRepayment = vault.repayLoan(asset, lendingCollateralVault, amount);
 
     // reduce the credit limit for the vault
     aaveCollateralVaultProxy.decreaseLimit(lendingCollateralVault, address(vault), amount);
+    emit RepayLoan(address(vault), address(token), amount, loanRepayment)
   }
 
   /**
