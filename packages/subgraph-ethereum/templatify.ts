@@ -6,7 +6,7 @@ import path = require('path');
 
 import typy = require('typy');
 
-function getNetworkNameForSubgraph() {
+function getNetworkNameForSubgraph(): string | null {
   switch (process.env.SUBGRAPH) {
     case undefined:
     case 'tomafrench/delegated-withdrawals':
@@ -18,7 +18,7 @@ function getNetworkNameForSubgraph() {
   }
 }
 
-(async () => {
+(async (): Promise<void> => {
   const networksFilePath = path.join(__dirname, 'networks.yaml');
   const networks = yaml.load(
     await fs.readFile(networksFilePath, { encoding: 'utf-8' }),
