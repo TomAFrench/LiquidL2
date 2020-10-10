@@ -1,9 +1,10 @@
-const Handlebars = require('handlebars');
-const fs = require('fs-extra');
-const path = require('path');
-const yaml = require('js-yaml');
+import yaml = require('js-yaml');
 
-const { t } = require('typy');
+import Handlebars = require('handlebars');
+import fs = require('fs-extra');
+import path = require('path');
+
+import typy = require('typy');
 
 function getNetworkNameForSubgraph() {
   switch (process.env.SUBGRAPH) {
@@ -24,8 +25,8 @@ function getNetworkNameForSubgraph() {
   );
 
   const networkName = process.env.NETWORK_NAME || getNetworkNameForSubgraph();
-  const network = t(networks, networkName).safeObject;
-  if (t(network).isFalsy) {
+  const network = typy.t(networks, networkName || '').safeObject;
+  if (typy.t(network).isFalsy) {
     throw new Error(
       'Please set either a "NETWORK_NAME" or a "SUBGRAPH" environment variable',
     );
