@@ -1,0 +1,62 @@
+{
+  "name": "delegated-withdrawals-subgraph",
+  "description": "GraphQL server built with The Graph",
+  "version": "2.1.0",
+  "contributors": [
+    {
+      "name": "Tom French",
+      "url": "https://github.com/tomafrench"
+    },
+    {
+      "name": "Tom Waite",
+      "url": "https://github.com/thomas-waite"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/hack-money/Delegated-Withdrawals/issues"
+  },
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "^0.18.0",
+    "@graphprotocol/graph-ts": "^0.18.1",
+    "axios": "^0.19.0",
+    "eslint": "^7.10.0",
+    "eslint-config-airbnb-typescript-prettier": "^3.1.0",
+    "fs-extra": "^8.1.0",
+    "handlebars": "^4.5.2",
+    "js-yaml": "^3.13.1",
+    "lint-staged": "^10.2.2",
+    "prettier": "^2.1.2",
+    "shx": "^0.3.2",
+    "typescript": "^3.9.7",
+    "typy": "^3.3.0"
+  },
+  "license": "LGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hack-money/Delegated-Withdrawals.git"
+  },
+  "scripts": {
+    "precommit": "lint-staged",
+    "commit": "git-cz",
+    "clean": "shx rm -rf ./build ./src/types ./subgraph.yaml",
+    "codegen": "graph codegen --debug --output-dir src/types/",
+    "create:local": "graph create tomafrench/delegated-withdrawals --node http://127.0.0.1:8020",
+    "deploy": "graph deploy $SUBGRAPH --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
+    "deploy:mainnet": "yarn prepare:mainnet && SUBGRAPH=tomafrench/delegated-withdrawals yarn deploy",
+    "deploy:goerli": "yarn prepare:goerli && SUBGRAPH=tomafrench/delegated-withdrawals yarn deploy",
+    "deploy:local": "graph deploy tomafrench/delegated-withdrawals --debug --ipfs http://127.0.0.1:5001 --node http://127.0.0.1:8020",
+    "prepare:mainnet": "NETWORK_NAME=mainnet node ./templatify.js && yarn codegen",
+    "prepare:goerli": "NETWORK_NAME=goerli node ./templatify.js && yarn codegen",
+    "prepare:local": "NETWORK_NAME=local node ./templatify.js && yarn codegen",
+    "remove-local": "graph remove tomafrench/delegated-withdrawals --node http://127.0.0.1:8020/",
+    "reset-local": "yarn codegen && yarn remove-local && yarn create-local && yarn deploy-local"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "dependencies": {
+    "@graphprotocol/graph-ts": "^0.18.1"
+  }
+}

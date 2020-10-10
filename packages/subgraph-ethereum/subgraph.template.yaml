@@ -1,0 +1,47 @@
+specVersion: 0.0.2
+description: Tracking of loans on Mainnet
+repository: https://github.com/hack-money/Delegated-Withdrawals/packages/subgraph-ethereum
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: WithdrawalVaultFactory
+    network: {{ networkName }}
+    source:
+      abi: WithdrawalVaultFactory
+      address: '{{contracts.WithdrawalVaultFactory.address}}'
+      startBlock: {{ contracts.WithdrawalVaultFactory.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      abis:
+        - name: WithdrawalVaultFactory
+          file: ./abis/WithdrawalVaultFactory.json
+      entities:
+        - Vault
+        - Loan
+      eventHandlers:
+        - event: GiveLoan(indexed address,indexed address,uint256)
+          handler: handleGiveLoan
+        - event: Borrow(indexed address,indexed address,uint256)
+          handler: handleBorrow
+        - event: RepayLoan(indexed address,indexed address,uint256,uint256)
+          handler: handleRepayLoan
+      file: ./src/mappings/loans.ts
+      language: wasm/assemblyscript
+templates:
+  - name: IERC20
+    kind: ethereum/contract
+    network: {{ networkName }}
+    source:
+      abi: IERC20
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      entities:
+        - Token
+      abis:
+        - name: IERC20
+          file: ./abis/ERC20.json
+      file: ./src/mappings/empty.ts
+      language: wasm/assemblyscript

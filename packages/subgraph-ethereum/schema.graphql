@@ -1,0 +1,17 @@
+### Generic ###
+
+type WithdrawalVault @entity {
+  "Transaction hash"
+  id: ID!
+  owner: Bytes!
+  loans: [Loan!] @derivedFrom(field: "vault")
+}
+
+type Loan @entity {
+  "Transaction hash"
+  id: ID!
+  vault: WithdrawalVault!
+  token: Bytes!
+  amountBorrowed: BigInt!
+  creditLimit: BigInt!
+}
