@@ -105,14 +105,14 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
     */
   function repayLoan(address borrower, IERC20 asset, bytes calldata withdrawalProof) onLayer1 external override {
     // create2 a vault from borrower if doesn't exist
-    WithdrawalVault vault = WithdrawalVault(maybeMakeVault(borrower));
+    WithdrawalVault vault = maybeMakeVault(borrower);
 
     // submit withdrawalProof so that funds get credited to vault
     uint256 amount = vault.claimFunds(asset, maticRootChainManager, withdrawalProof);
     
     // repay any debt and refund any remaining funds to borrower
     address lendingCollateralVault = collateralVaults[address(asset)];
-    uint256 loanRepayment = vault.repayLoan(asset, lendingCollateralVault, amount);
+    uint256 loanRepayment = vault.repayLoan(asset, aaveCollateralVaultProxy, lendingCollateralVault, amount);
 
     // reduce the credit limit for the vault
     aaveCollateralVaultProxy.decreaseLimit(lendingCollateralVault, address(vault), amount);
@@ -125,9 +125,9 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
     * @param borrowerAddress - address of borrower whose vault we are looking for
     * @return vaultAddress - the address of the borrower's vault
     */
-  function maybeMakeVault(address borrowerAddress) internal returns (address) {
+  function maybeMakeVault(address borrowerAddress) internal returns (WithdrawalVault) {
     bytes32 vaultSalt = keccak256(abi.encode(borrowerAddress));
-    address vaultAddress = Create2.computeAddress(vaultSalt, keccak256(type(WithdrawalVault).creationCode));
+    address vaultAddress = Create2.computeAddress(vaultSalt, keccak256(abi.encodePacked(type(WithdrawalVault).creationCode, abi.encode(borrowerAddress))));
     
     // Check if there exists a contract at the expected address
     // If not then deploy a vault to there.
@@ -136,8 +136,8 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
       sz := extcodesize(vaultAddress)
     }
     if (sz == 0) {
-      // return new WithdrawalVault{salt: vaultSalt}(borrowerAddress);
+      return new WithdrawalVault{salt: vaultSalt}(borrowerAddress);
     }
-    return vaultAddress;
+    return WithdrawalVault(vaultAddress);
   }
 }

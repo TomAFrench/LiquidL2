@@ -13,12 +13,10 @@ contract WithdrawalVault is Ownable {
   using SafeMath for uint256;
 
   address public immutable borrower;
-  IAaveCollateralVaultProxy public immutable aaveCollateralVaultProxy;
   mapping(address => uint256) public loans;
 
-  constructor (address _borrower, IAaveCollateralVaultProxy _aaveCollateralVaultProxy ) {
+  constructor (address _borrower) {
     borrower = _borrower;
-    aaveCollateralVaultProxy = _aaveCollateralVaultProxy;
   }
 
   /**
@@ -36,7 +34,7 @@ contract WithdrawalVault is Ownable {
     * @param collateralVault - the address which has given this vault the loan
     * @param amount - the amount of asset which the loan is going to use to repay the loan
     */
-  function repayLoan(IERC20 asset, address collateralVault, uint256 amount) external onlyOwner returns (uint256 repaymentAmount){
+  function repayLoan(IERC20 asset, IAaveCollateralVaultProxy aaveCollateralVaultProxy, address collateralVault, uint256 amount) external onlyOwner returns (uint256 repaymentAmount){
     // Only repay up to the amount borrowed
     repaymentAmount = amount < loans[address(asset)] ? amount : loans[address(asset)];
     
