@@ -18,6 +18,7 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
   bool public immutable layer1;
   mapping(address => address) public collateralVaults;
 
+  event GiveLoan(address indexed vault, address indexed token, uint256 amount);
   event Withdrawal(address indexed vault, address indexed token, uint256 amount);
 
   modifier onLayer1 {
@@ -75,8 +76,9 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
     * @param asset the asset in which the loan is denominated
     * @param amount the size of the loan 
     */
-  function giveLoan(address vaultAddress, address asset, uint amount) onlyOwner onLayer1 external override {
+  function giveLoan(address vaultAddress, address asset, uint256 amount) onlyOwner onLayer1 external override {
     aaveCollateralVaultProxy.increaseLimit(collateralVaults[asset], vaultAddress, amount);
+    emit GiveLoan(vaultAddress, asset, amount);
   }
 
   /**
