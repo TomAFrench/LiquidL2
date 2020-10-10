@@ -2,8 +2,17 @@
   "name": "protocol",
   "version": "0.0.0",
   "main": "index.js",
-  "repository": "https://github.com/thomas-waite/BetterDeposits.git",
-  "author": "Tom Waite",
+  "repository": "https://github.com/hack-money/Delegated-Withdrawals.git",
+  "contributors": [
+    {
+      "name": "Tom French",
+      "url": "https://github.com/tomafrench"
+    },
+    {
+      "name": "Tom Waite",
+      "url": "https://github.com/thomas-waite"
+    }
+  ],
   "private": true,
   "scripts": {
     "build": "yarn compile && yarn typechain",
