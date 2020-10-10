@@ -103,7 +103,7 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
 
     // reduce the credit limit for the vault
     aaveCollateralVaultProxy.decreaseLimit(lendingCollateralVault, address(vault), amount);
-    emit RepayLoan(address(vault), address(token), amount, loanRepayment)
+    emit RepayLoan(address(vault), address(token), amount, loanRepayment);
   }
 
   /**
