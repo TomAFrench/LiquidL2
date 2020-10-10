@@ -90,7 +90,7 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
     WithdrawalVault vault = WithdrawalVault(maybeMakeVault(borrower));
 
     // submit withdrawalProof so that funds get credited to vault
-    uint256 amount = vault.claimFunds(asset, withdrawalProof);
+    uint256 amount = vault.claimFunds(asset, maticRootChainManager, withdrawalProof);
     
 
     // repay any debt and refund any remaining funds to borrower

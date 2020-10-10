@@ -6,6 +6,7 @@ import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import { IERC20 } from '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import { IChildERC20 } from './interfaces/IChildERC20.sol';
 import { IAaveCollateralVaultProxy } from './interfaces/IAaveCollateralVaultProxy.sol';
+import { IRootChainManager } from "./interfaces/IRootChainManager.sol";
 import { IWithdrawalVaultFactory } from './interfaces/IWithdrawalVaultFactory.sol';
 
 contract WithdrawalVault is Ownable {
@@ -52,10 +53,12 @@ contract WithdrawalVault is Ownable {
     * @param withdrawalProof - the proof object which allows the WithdrawalVault to claim funds from the rootChainManager
     * @return withdrawalAmount - the amount of asset which the vault has gained through the withdrawal
     */
-  function claimFunds (IERC20 asset, bytes calldata withdrawalProof) external onlyOwner returns (uint256 withdrawalAmount) {
+  function claimFunds (IERC20 asset, IRootChainManager maticRootChainManager, bytes calldata withdrawalProof) external onlyOwner returns (uint256 withdrawalAmount) {
     uint256 balanceBefore = asset.balanceOf(address(this));
+    
     // claim funds from RootChainManager to be sent to this address
-  
+    maticRootChainManager.exit(withdrawalProof);
+    
     withdrawalAmount = asset.balanceOf(address(this)).sub(balanceBefore);
     require(withdrawalAmount > 0, "Withdrawal is of incorrect asset.");
   }
