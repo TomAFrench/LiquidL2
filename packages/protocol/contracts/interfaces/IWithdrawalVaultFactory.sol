@@ -29,6 +29,13 @@ interface IWithdrawalVaultFactory {
     function depositCollateral(IAToken asset, uint256 amount) external;
 
     /**
+     * @notice Withdraw funds from a collateralVault.
+     * @param asset the address of the aToken asset which is to be withdrawn
+     * @param amount the amount of this asset to be withdrawn
+     */
+    function withdrawCollateral(IAToken asset, uint256 amount) external;
+
+    /**
      * @notice Increase the credit limit of the supplied address by given amount
      * @param vaultAddress the address of the vault to be given an increased credit limit
      * @param asset the asset in which the loan is denominated

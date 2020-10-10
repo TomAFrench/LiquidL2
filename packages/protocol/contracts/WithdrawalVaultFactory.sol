@@ -71,6 +71,18 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
   }
 
   /**
+  * @notice Withdraw funds from a collateralVault.
+  * @param asset the address of the aToken asset which is to be withdrawn
+  * @param amount the amount of this asset to be withdrawn
+  */
+  function withdrawCollateral(IAToken asset, uint amount) onlyOwner onLayer1 external override {
+    address collateralVault = collateralVaults[asset.underlyingAssetAddress()];
+    require(collateralVault != address(0), "No collateral vault exists for this asset");
+    aaveCollateralVaultProxy.withdraw(collateralVault, address(asset), amount);
+    asset.transfer(msg.sender, amount);
+  }
+
+  /**
     * @notice Increase the credit limit of the supplied address by given amount
     * @param vaultAddress the address of the vault to be given an increased credit limit
     * @param asset the asset in which the loan is denominated
@@ -95,7 +107,6 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
     // submit withdrawalProof so that funds get credited to vault
     uint256 amount = vault.claimFunds(asset, maticRootChainManager, withdrawalProof);
     
-
     // repay any debt and refund any remaining funds to borrower
     address lendingCollateralVault = collateralVaults[address(asset)];
     uint256 loanRepayment = vault.repayLoan(asset, lendingCollateralVault, amount);
