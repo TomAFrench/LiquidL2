@@ -45,8 +45,8 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
   }
 
   /**
-    * @notice Deposit funds into a collateralVault to be used to back loans.
-    * @param asset the asset which is to be deposited
+    * @notice Transfer an amount of funds into the user's vault and start a withdrawal
+    * @param asset  the asset which is to be deposited
     * @param amount the amount of this asset to be deposited
     */
   function exitFunds(IChildERC20 asset, uint amount) external onLayer2 override {
