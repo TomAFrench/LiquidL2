@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
+
 pragma solidity 0.7.1;
 
 import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -8,6 +9,7 @@ import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
  * ERC20 contract where anybody is able to mint
  */
 contract ERC20Mintable is ERC20 {
+    // solhint-disable-next-line no-empty-blocks
     constructor() ERC20("Test", "test") {}
 
     function mint(address _to, uint256 _value) public returns (bool) {

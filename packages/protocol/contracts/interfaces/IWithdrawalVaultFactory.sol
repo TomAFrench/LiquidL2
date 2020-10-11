@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity 0.7.1;
 
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
@@ -21,6 +23,17 @@ interface IWithdrawalVaultFactory {
      * @param amount the amount of this asset to be deposited
      */
     function exitFunds(IChildERC20 asset, uint256 amount) external;
+
+    function exitFundsWithAuthorization(
+        IChildERC20 asset,
+        uint256 amount,
+        uint256 validAfter,
+        uint256 validBefore,
+        bytes32 nonce,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external;
 
     /**
      * @notice Deposit funds into a collateralVault to be used to back loans.

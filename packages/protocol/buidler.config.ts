@@ -2,6 +2,7 @@ import { BuidlerConfig, usePlugin } from '@nomiclabs/buidler/config';
 import "./tasks/typechain";
 
 usePlugin('@nomiclabs/buidler-waffle');
+usePlugin('buidler-spdx-license-identifier');
 usePlugin("solidity-coverage");
 
 const config: BuidlerConfig = {
@@ -37,6 +38,10 @@ const config: BuidlerConfig = {
     outDir: "typechain",
     target: "ethers-v5",
   },
+  spdxLicenseIdentifier: {
+    overwrite: true,
+    runOnCompile: true,
+  }
 };
 
 export default config;
