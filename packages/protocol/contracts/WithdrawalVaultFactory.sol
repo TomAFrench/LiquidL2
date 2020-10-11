@@ -52,6 +52,42 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
   function exitFunds(IChildERC20 asset, uint amount) external onLayer2 override {
     // create2 a vault from msg.sender if doesn't exist already
     WithdrawalVault vault = WithdrawalVault(maybeMakeVault(msg.sender));
+    
+    // Move funds into vault
+    require(asset.transferFrom(msg.sender, address(vault), amount), "Transfer of tokens failed");
+    
+    vault.exitFunds(asset, amount);
+    emit Withdrawal(address(vault), address(asset), amount);
+  }
+
+  /**
+    * @notice Transfer an amount of funds into the user's vault and start a withdrawal
+    * @dev Avoids a approve transaction but requires the asset to support EIP 3009.
+    * @param asset         The asset which is to be deposited
+    * @param amount        The amount of this asset to be deposited
+    * @param validAfter    The time after which this is valid (unix time)
+    * @param validBefore   The time before which this is valid (unix time)
+    * @param nonce         Unique nonce
+    * @param v             v of the signature
+    * @param r             r of the signature
+    * @param s             s of the signature
+    */
+  function exitFundsWithAuthorization(
+      IChildERC20 asset,
+      uint256 amount,
+      uint256 validAfter,
+      uint256 validBefore,
+      bytes32 nonce,
+      uint8 v,
+      bytes32 r,
+      bytes32 s
+    ) external onLayer2 override {
+    // create2 a vault from msg.sender if doesn't exist already
+    WithdrawalVault vault = WithdrawalVault(maybeMakeVault(msg.sender));
+
+    // Move funds into vault
+    asset.transferWithAuthorization(msg.sender, address(vault), amount, validAfter,validBefore,nonce,v,r,s);
+
     vault.exitFunds(asset, amount);
     emit Withdrawal(address(vault), address(asset), amount);
   }

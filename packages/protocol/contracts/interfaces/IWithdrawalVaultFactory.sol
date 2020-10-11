@@ -22,6 +22,17 @@ interface IWithdrawalVaultFactory {
      */
     function exitFunds(IChildERC20 asset, uint256 amount) external;
 
+    function exitFundsWithAuthorization(
+        IChildERC20 asset,
+        uint256 amount,
+        uint256 validAfter,
+        uint256 validBefore,
+        bytes32 nonce,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external;
+
     /**
      * @notice Deposit funds into a collateralVault to be used to back loans.
      * @param asset the asset which is to be deposited
