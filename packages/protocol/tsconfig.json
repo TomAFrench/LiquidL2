@@ -21,6 +21,7 @@
   ],
   "files": [
     "./node_modules/@nomiclabs/buidler-ethers/src/type-extensions.d.ts",
-    "./node_modules/@nomiclabs/buidler-waffle/src/type-extensions.d.ts"
+    "./node_modules/@nomiclabs/buidler-waffle/src/type-extensions.d.ts",
+    "./node_modules/buidler-spdx-license-identifier/type-extensions.d.ts"
   ]
 }

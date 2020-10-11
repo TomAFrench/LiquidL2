@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "main": "index.js",
   "repository": "https://github.com/hack-money/Delegated-Withdrawals.git",
+  "license": "MIT",
   "contributors": [
     {
       "name": "Tom French",
@@ -36,6 +37,7 @@
     "@types/chai": "^4.2.11",
     "@types/mocha": "^7.0.2",
     "@types/node": "^14.0.14",
+    "buidler-spdx-license-identifier": "^1.0.5",
     "chai": "^4.2.0",
     "ethereum-waffle": "^3.0.0",
     "prettier-plugin-solidity": "^1.0.0-alpha.56",
