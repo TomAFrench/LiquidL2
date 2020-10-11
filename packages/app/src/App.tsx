@@ -1,17 +1,15 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import HomePage from "./pages/HomePage";
 
-function App(): ReactElement {
-  return (
-    <Router>
-      <Switch>
-        <Route path="/" exact>
-          {" "}
-          Hello World!{" "}
-        </Route>
-      </Switch>
-    </Router>
-  );
-}
+const App: React.FC = () => (
+  <Router>
+    <Switch>
+      <Route path="/" exact>
+        <HomePage />
+      </Route>
+    </Switch>
+  </Router>
+);
 
 export default App;
