@@ -21,6 +21,7 @@
     "clean": "buidler clean",
     "coverage": "buidler coverage --solcoverjs ./.solcover.js --network coverage --temp artifacts --testfiles \"./test/**/*.ts\"",
     "lint:sol": "solhint --config ./.solhint.json --max-warnings 0 \"contracts/**/*.sol\"",
+    "prettier:sol": "prettier --plugin ./node_modules/prettier-plugin-solidity --write contracts/**/*.sol",
     "test": "buidler test",
     "typechain": "buidler typechain",
     "deploy:localhost": "yarn buidler run --network localhost scripts/deploy.ts"
