@@ -1,9 +1,19 @@
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
-import { Provider, Web3Provider } from "@ethersproject/providers";
+import { Network, Provider, Web3Provider } from "@ethersproject/providers";
 
-import { Body, Button, Header, Image } from "../components";
+import styled from "styled-components";
+import { Body, Button, Header, Image } from "../components/common";
 import { web3Modal, logoutOfWeb3Modal } from "../utils/web3Modal";
 import logo from "../ethereumLogo.png";
+import BurnWidget from "../components/BurnWidget";
+import LoanWidget from "../components/LoanWidget";
+
+export const Widgets = styled.div`
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+`;
 
 function WalletButton({
   provider,
@@ -29,6 +39,7 @@ function WalletButton({
 
 const HomePage: React.FC = () => {
   const [provider, setProvider] = useState<Web3Provider>();
+  const [network, setNetwork] = useState<Network>();
 
   /* Open wallet selection modal. */
   const loadWeb3Modal = useCallback(async () => {
@@ -43,6 +54,13 @@ const HomePage: React.FC = () => {
     }
   }, [loadWeb3Modal]);
 
+  useEffect(() => {
+    const getNetwork = async () => {
+      if (provider) setNetwork(await provider.getNetwork());
+    };
+    getNetwork();
+  });
+
   return (
     <div>
       <Header>
@@ -50,9 +68,11 @@ const HomePage: React.FC = () => {
       </Header>
       <Body>
         <Image src={logo} alt="react-logo" />
-        <p>
-          Edit <code>packages/app/src/App.tsx</code> and save to reload.
-        </p>
+        <h2>Delegated Withdrawals</h2>
+        <Widgets>
+          <BurnWidget provider={provider} network={network} />
+          <LoanWidget provider={provider} network={network} />
+        </Widgets>
       </Body>
     </div>
   );

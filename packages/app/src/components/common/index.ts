@@ -17,12 +17,11 @@ export const Body = styled.body`
   display: flex;
   flex-direction: column;
   font-size: calc(10px + 2vmin);
-  justify-content: center;
   min-height: calc(100vh - 70px);
 `;
 
 export const Image = styled.img`
-  height: 40vmin;
+  height: 4vmin;
   margin-bottom: 16px;
   pointer-events: none;
 `;
@@ -54,4 +53,14 @@ export const Button = styled.button`
     border: none;
     outline: none;
   }
+`;
+
+export const Border = styled.div`
+  border: solid;
+  border-color: white;
+  border-radius: 8px;
+  border-width: 2px;
+  font-size: 16px;
+  margin: 0px 20px;
+  padding: 12px 24px;
 `;
