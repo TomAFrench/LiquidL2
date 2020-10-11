@@ -1,8 +1,8 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 
-function App() {
+function App(): ReactElement {
   return (
     <Router>
       <Switch>
