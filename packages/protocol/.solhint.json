@@ -5,6 +5,7 @@
     "code-complexity": ["error", 7],
     "compiler-version": ["error", "^0.7.1"],
     "constructor-syntax": "error",
+    "func-visibility": ["warn", { "ignoreConstructors": true }],
     "max-line-length": ["error", 120],
     "not-rely-on-time": "off",
     "prettier/prettier": "error",
