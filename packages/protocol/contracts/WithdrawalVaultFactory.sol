@@ -56,7 +56,7 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
      */
     function exitFunds(IChildERC20 asset, uint256 amount) external override onLayer2 {
         // create2 a vault from msg.sender if doesn't exist already
-        WithdrawalVault vault = WithdrawalVault(maybeMakeVault(msg.sender));
+        WithdrawalVault vault = maybeMakeVault(msg.sender);
 
         // Move funds into vault
         require(asset.transferFrom(msg.sender, address(vault), amount), "Transfer of tokens failed");
@@ -88,7 +88,7 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
         bytes32 s
     ) external override onLayer2 {
         // create2 a vault from msg.sender if doesn't exist already
-        WithdrawalVault vault = WithdrawalVault(maybeMakeVault(msg.sender));
+        WithdrawalVault vault = maybeMakeVault(msg.sender);
 
         // Move funds into vault
         asset.transferWithAuthorization(msg.sender, address(vault), amount, validAfter, validBefore, nonce, v, r, s);
