@@ -106,7 +106,8 @@ contract WithdrawalVaultFactory is Ownable, IWithdrawalVaultFactory {
         address underlying = asset.underlyingAssetAddress();
         address collateralVault = collateralVaults[underlying];
         if (collateralVault == address(0)) {
-            collateralVaults[underlying] = aaveCollateralVaultProxy.deployVault(underlying);
+            collateralVault = aaveCollateralVaultProxy.deployVault(underlying);
+            collateralVaults[underlying] = collateralVault;
         }
 
         asset.transferFrom(msg.sender, address(this), amount);
