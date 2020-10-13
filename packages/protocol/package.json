@@ -35,7 +35,7 @@
     "@nomiclabs/buidler-etherscan": "^2.1.0",
     "@nomiclabs/buidler-waffle": "^2.0.0",
     "@openzeppelin/contracts": "^3.2.1-solc-0.7",
-    "@typechain/ethers-v5": "^1.0.0",
+    "@typechain/ethers-v5": "^2.0.0",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^7.0.2",
     "@types/node": "^14.0.14",
@@ -48,7 +48,7 @@
     "solhint-plugin-prettier": "^0.0.5",
     "solidity-coverage": "^0.7.10",
     "ts-node": "^8.10.2",
-    "typechain": "^2.0.0",
+    "typechain": "^3.0.0",
     "typescript": "^3.9.5"
   }
 }
