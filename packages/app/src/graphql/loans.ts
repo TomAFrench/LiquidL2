@@ -26,9 +26,7 @@ const vaultQuery: DocumentNode = gql`
   }
 `;
 
-export async function getWithdrawalVault(
-  userAddress: string,
-): Promise<WithdrawalVault[]> {
+export async function getWithdrawalVault(userAddress: string): Promise<WithdrawalVault[]> {
   const client = new ApolloClient({
     uri: subgraphUri.mainnet,
     cache: new InMemoryCache(),

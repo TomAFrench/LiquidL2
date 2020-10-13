@@ -110,15 +110,8 @@ const BurnWidget: React.FC<Props> = ({ provider, network }) => {
   return (
     <Border style={{ opacity: network?.chainId === 137 ? 1 : 0.1 }}>
       <p> Matic USDC Balance: {`${formatUnits(100000000, 6)} USDC`}</p>
-      <TextField
-        type="number"
-        value={amount}
-        onChange={(event): void => setAmount(event.target.value)}
-      />
-      <Button
-        disabled={network?.chainId !== 137}
-        onClick={(): Promise<void> => handleExit(parseUnits(amount, 6))}
-      >
+      <TextField type="number" value={amount} onChange={(event): void => setAmount(event.target.value)} />
+      <Button disabled={network?.chainId !== 137} onClick={(): Promise<void> => handleExit(parseUnits(amount, 6))}>
         Withdraw
       </Button>
     </Border>

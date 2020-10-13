@@ -9,7 +9,7 @@ interface Props {
   network: Network | undefined;
 }
 
-const LoanWidget: React.FC<Props> = ({ provider, network }) => {
+const LoanWidget: React.FC<Props> = ({ network }) => {
   return (
     <Border style={{ opacity: network?.chainId === 1 ? 1 : 0.1 }}>
       <p> Pending Withdrawals: {`${formatUnits(100000000, 6)} USDC`}</p>

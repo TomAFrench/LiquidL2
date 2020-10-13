@@ -45,9 +45,7 @@ async function getPaginatedWithdrawals(
   });
 }
 
-export async function getWithdrawals(
-  vaultAddress: string,
-): Promise<Withdrawal[]> {
+export async function getWithdrawals(vaultAddress: string): Promise<Withdrawal[]> {
   const client = new ApolloClient({
     uri: subgraphUri.mainnet,
     cache: new InMemoryCache(),
@@ -61,12 +59,7 @@ export async function getWithdrawals(
   while (!ended) {
     try {
       /* eslint-disable-next-line no-await-in-loop */
-      const res: Response = await getPaginatedWithdrawals(
-        client,
-        first,
-        vaultAddress,
-        skip,
-      );
+      const res: Response = await getPaginatedWithdrawals(client, first, vaultAddress, skip);
       skip += first;
 
       withdrawals = [...withdrawals, ...res.data.withdrawals];

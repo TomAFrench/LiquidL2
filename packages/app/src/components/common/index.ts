@@ -46,8 +46,7 @@ export const Button = styled.button`
   margin: 0px 20px;
   padding: 12px 24px;
 
-  ${(props: { hidden?: boolean }): string | undefined =>
-    props.hidden ? "hidden" : undefined}
+  ${(props: { hidden?: boolean }): string | undefined => (props.hidden ? "hidden" : undefined)}
 
   &:focus {
     border: none;
