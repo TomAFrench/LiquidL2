@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { AddressZero } from "@ethersproject/constants";
 import { Network, Web3Provider } from "@ethersproject/providers";
 import { formatUnits, parseUnits } from "@ethersproject/units";
 import { TextField } from "@material-ui/core";
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
 import { randomBytes } from "@ethersproject/random";
 import { hexlify, splitSignature } from "@ethersproject/bytes";
+import { Contract } from "@ethersproject/contracts";
 import { Border, Button } from "../common";
+import IWithdrawalVaultFactory from "../../abis/IWithdrawalVaultFactory.json";
+import { MATIC_USDC_ADDRESS, WITHDRAWAL_VAULT_FACTORY_ADDRESS } from "../../utils/constants";
 
 interface Props {
   provider: Web3Provider | undefined;
@@ -65,8 +67,6 @@ const BurnWidget: React.FC<Props> = ({ provider, network }) => {
     if (!provider) return;
 
     const userAddress = await provider.getSigner().getAddress();
-    const usdcAddress = AddressZero;
-    const withdrawalVaultFactoryAddress = AddressZero;
     const authorisationExpiry = Math.floor(Date.now() / 1000) + 3600; // Valid for an hour
     const nonce = hexlify(randomBytes(32));
     const signature = await provider.send("eth_signTypedData_v4", [
@@ -76,9 +76,9 @@ const BurnWidget: React.FC<Props> = ({ provider, network }) => {
           "USDC",
           "1",
           137,
-          usdcAddress,
+          MATIC_USDC_ADDRESS,
           userAddress,
-          withdrawalVaultFactoryAddress,
+          WITHDRAWAL_VAULT_FACTORY_ADDRESS,
           withdrawalAmount,
           0,
           authorisationExpiry,
@@ -89,22 +89,22 @@ const BurnWidget: React.FC<Props> = ({ provider, network }) => {
 
     const { v, r, s } = splitSignature(signature);
 
-    console.table({ v, r, s });
+    const withdrawalVaultFactory = new Contract(
+      WITHDRAWAL_VAULT_FACTORY_ADDRESS,
+      IWithdrawalVaultFactory.abi,
+      provider.getSigner(),
+    );
 
-    // const withdrawalVaultFactory = IWithdrawalVaultFactoryFactory.connect(
-    //   withdrawalVaultFactoryAddress,
-    //   provider,
-    // );
-    // withdrawalVaultFactory.exitFundsWithAuthorization(
-    // usdcAddress,
-    // amount,
-    // 0,
-    // authorisationExpiry,
-    // nonce,
-    // v,
-    //  r,
-    //  s
-    // )
+    withdrawalVaultFactory.exitFundsWithAuthorization(
+      MATIC_USDC_ADDRESS,
+      amount,
+      0,
+      authorisationExpiry,
+      nonce,
+      v,
+      r,
+      s,
+    );
   };
 
   return (
