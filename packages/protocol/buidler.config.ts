@@ -1,9 +1,11 @@
 import { BuidlerConfig, usePlugin } from '@nomiclabs/buidler/config';
 import "./tasks/typechain";
 
+usePlugin("@nomiclabs/buidler-etherscan");
 usePlugin('@nomiclabs/buidler-waffle');
 usePlugin('buidler-spdx-license-identifier');
 usePlugin("solidity-coverage");
+
 
 const config: BuidlerConfig = {
   solc: {
@@ -24,6 +26,15 @@ const config: BuidlerConfig = {
     coverage: {
       url: "http://127.0.0.1:8555",
     },
+    goerli: {
+      url: `https://goerli.infura.io/v3/${INFURA_PROJECT_ID}`,
+      accounts: [`0x${GOERLI_PRIVATE_KEY}`]
+    },
+    mumbai: {
+      url: `https://rpc-mumbai.matic.today`,
+      accounts: [`0x${GOERLI_PRIVATE_KEY}`]
+
+    },
   },
   paths: {
     artifacts: "./src/artifacts",
@@ -41,6 +52,9 @@ const config: BuidlerConfig = {
   spdxLicenseIdentifier: {
     overwrite: true,
     runOnCompile: true,
+  },
+  etherscan: {
+    apiKey: ETHERSCAN_API_KEY
   }
 };
 
