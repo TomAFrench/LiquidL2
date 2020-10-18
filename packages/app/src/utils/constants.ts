@@ -1,3 +1,4 @@
+export const MAINNET_RPC_URL = `https://goerli.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`;
 export const MATIC_RPC_URL = "https://rpc-mumbai.matic.today";
 export const MATIC_CHAIN_ID = 80001;
 export const MAINNET_CHAIN_ID = 5;
