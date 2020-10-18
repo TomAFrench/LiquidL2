@@ -15,6 +15,8 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.3
       abis:
+        - name: WithdrawalVault
+          file: ./abis/WithdrawalVault.json
         - name: WithdrawalVaultFactory
           file: ./abis/WithdrawalVaultFactory.json
       entities:
@@ -43,5 +45,20 @@ templates:
       abis:
         - name: IERC20
           file: ./abis/ERC20.json
+      file: ./src/mappings/empty.ts
+      language: wasm/assemblyscript
+  - name: WithdrawalVault
+    kind: ethereum/contract
+    network: {{ networkName }}
+    source:
+      abi: WithdrawalVault
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      entities:
+        - Token
+      abis:
+        - name: WithdrawalVault
+          file: ./abis/WithdrawalVault.json
       file: ./src/mappings/empty.ts
       language: wasm/assemblyscript

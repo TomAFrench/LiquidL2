@@ -11,9 +11,9 @@ export function loadLoan(vaultAddress: Address, assetAddress: Address): Loan {
 
     loan = new Loan(loanId);
     loan.vault = vaultAddress.toHexString();
-    loan.token = assetAddress.toHexString();
+    loan.token = assetAddress;
     loan.amountBorrowed = BigInt.fromI32(0);
     loan.creditLimit = BigInt.fromI32(0);
   }
-  return loan;
+  return loan as Loan;
 }
