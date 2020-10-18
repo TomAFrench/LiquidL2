@@ -29,7 +29,9 @@
     ],
     "nohoist": [
       "**/protocol/",
-      "**/protocol/**"
+      "**/protocol/**",
+      "**/@graphprotocol/graph-ts",
+      "**/@graphprotocol/graph-ts/**"
     ]
   }
 }
