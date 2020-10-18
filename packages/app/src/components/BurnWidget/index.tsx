@@ -7,10 +7,7 @@ import { randomBytes } from "@ethersproject/random";
 import { hexlify, splitSignature } from "@ethersproject/bytes";
 import { Contract } from "@ethersproject/contracts";
 import { Zero } from "@ethersproject/constants";
-import { getCreate2Address, keccak256, solidityKeccak256 } from "ethers/lib/utils";
-import { defaultAbiCoder } from "@ethersproject/abi";
 import { Border, Button } from "../common";
-import WithdrawalVault from "../../abis/WithdrawalVault.json";
 import IWithdrawalVaultFactory from "../../abis/IWithdrawalVaultFactory.json";
 import IERC20 from "../../abis/IERC20.json";
 
@@ -20,6 +17,7 @@ import {
   MATIC_USDC_ADDRESS,
   WITHDRAWAL_VAULT_FACTORY_ADDRESS,
 } from "../../utils/constants";
+import { calculateVaultAddress } from "../../utils/vaults";
 
 interface Props {
   userAddress: string | undefined;
@@ -71,16 +69,6 @@ const eip3009SignatureData = (
     nonce,
   },
 });
-
-const calculateVaultAddress = (userAddress: string): string => {
-  const abiEncodedAddress = defaultAbiCoder.encode(["address"], [userAddress]);
-  const vaultAddress = getCreate2Address(
-    WITHDRAWAL_VAULT_FACTORY_ADDRESS,
-    keccak256(abiEncodedAddress),
-    solidityKeccak256(["bytes", "address"], [WithdrawalVault.bytecode, abiEncodedAddress]),
-  );
-  return vaultAddress;
-};
 
 const useUSDCBalance = (userAddress: string | undefined): [BigNumber, () => void] => {
   const [balance, setBalance] = useState<BigNumber>(Zero);
@@ -159,6 +147,7 @@ const BurnWidget: React.FC<Props> = ({ userAddress, provider, network }) => {
 
   return (
     <Border style={{ opacity: network?.chainId === MATIC_CHAIN_ID ? 1 : 0.1 }}>
+      <h2>Withdraw</h2>
       <p> Matic USDC Balance: {`${formatUnits(balance, 6)} USDC`}</p>
       <TextField type="number" value={amount} onChange={(event): void => setAmount(event.target.value)} />
       <Button

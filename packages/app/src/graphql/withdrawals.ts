@@ -1,15 +1,11 @@
 import { ApolloClient, DocumentNode, gql, InMemoryCache } from "@apollo/client";
-import { MaticNetworks, Withdrawal } from "../types";
+import { Withdrawal } from "../types";
 
 type Response = {
   data: { withdrawals: Withdrawal[] };
 };
 
-const subgraphUri: { [key in MaticNetworks]: string } = {
-  mainnet: "https://api.thegraph.com/subgraphs/name/sablierhq/sablier",
-  rinkeby: "https://api.thegraph.com/subgraphs/name/sablierhq/sablier-rinkeby",
-  goerli: "https://api.thegraph.com/subgraphs/name/sablierhq/sablier-goerli",
-};
+const subgraphUri = "https://api.mumbai-graph.matic.today/subgraphs/name/tomafrench/delegated-withdrawals-mumbai";
 
 const paginatedWithdrawalsQuery: DocumentNode = gql`
   query withdrawals($first: Int!, $skip: Int!, $user: String!) {
@@ -17,13 +13,7 @@ const paginatedWithdrawalsQuery: DocumentNode = gql`
       id
       user
       amount
-      childToken {
-        id
-        name
-        decimals
-        symbol
-        rootToken
-      }
+      childToken
     }
   }
 `;
@@ -47,7 +37,7 @@ async function getPaginatedWithdrawals(
 
 export async function getWithdrawals(vaultAddress: string): Promise<Withdrawal[]> {
   const client = new ApolloClient({
-    uri: subgraphUri.mainnet,
+    uri: subgraphUri,
     cache: new InMemoryCache(),
   });
 

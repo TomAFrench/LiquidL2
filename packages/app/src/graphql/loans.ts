@@ -1,43 +1,35 @@
 import { ApolloClient, DocumentNode, gql, InMemoryCache } from "@apollo/client";
-import { MaticNetworks, WithdrawalVault } from "../types";
+import { Loan } from "../types";
 
 type Response = {
-  data: { withdrawalVaults: WithdrawalVault[] };
+  data: { loan: Loan };
 };
 
-const subgraphUri: { [key in MaticNetworks]: string } = {
-  mainnet: "https://api.thegraph.com/subgraphs/name/sablierhq/sablier",
-  rinkeby: "https://api.thegraph.com/subgraphs/name/sablierhq/sablier-rinkeby",
-  goerli: "https://api.thegraph.com/subgraphs/name/sablierhq/sablier-goerli",
-};
+const subgraphUri = "https://api.thegraph.com/subgraphs/name/tomafrench/delegated-withdrawals-goerli";
 
-const vaultQuery: DocumentNode = gql`
-  query vault($owner: String!) {
-    withdrawalVaults(where: { owner: $owner }) {
+const loanQuery: DocumentNode = gql`
+  query loan($loan: String!) {
+    loan(id: $loan) {
       id
-      owner
-      loans {
-        id
-        token
-        amountBorrowed
-        creditLimit
-      }
+      token
+      amountBorrowed
+      creditLimit
     }
   }
 `;
 
-export async function getWithdrawalVault(userAddress: string): Promise<WithdrawalVault[]> {
+export async function getLoan(vaultAddress: string, tokenAddress: string): Promise<Loan> {
   const client = new ApolloClient({
-    uri: subgraphUri.mainnet,
+    uri: subgraphUri,
     cache: new InMemoryCache(),
   });
 
   const res: Response = await client.query({
-    query: vaultQuery,
+    query: loanQuery,
     variables: {
-      owner: userAddress,
+      loan: vaultAddress.toLowerCase() + tokenAddress.toLowerCase(),
     },
   });
 
-  return res.data.withdrawalVaults;
+  return res.data.loan;
 }
