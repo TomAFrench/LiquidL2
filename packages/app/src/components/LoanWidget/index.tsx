@@ -6,7 +6,7 @@ import { Contract } from "@ethersproject/contracts";
 import { BigNumber } from "@ethersproject/bignumber";
 import { Border, Button } from "../common";
 import IWithdrawalVaultFactory from "../../abis/IWithdrawalVaultFactory.json";
-import { MAINNET_USDC_ADDRESS, WITHDRAWAL_VAULT_FACTORY_ADDRESS } from "../../utils/constants";
+import { MAINNET_CHAIN_ID, MAINNET_USDC_ADDRESS, WITHDRAWAL_VAULT_FACTORY_ADDRESS } from "../../utils/constants";
 
 interface Props {
   provider: Web3Provider | undefined;
@@ -28,7 +28,7 @@ const LoanWidget: React.FC<Props> = ({ provider, network }) => {
   };
 
   return (
-    <Border style={{ opacity: network?.chainId === 1 ? 1 : 0.1 }}>
+    <Border style={{ opacity: network?.chainId === MAINNET_CHAIN_ID ? 1 : 0.1 }}>
       <p> Pending Withdrawals: {`${formatUnits(100000000, 6)} USDC`}</p>
       <p> Credit Limit: {`${formatUnits(100000000, 6)} USDC`}</p>
       <p> Amount Borrowed: {`${formatUnits(50000000, 6)} USDC`}</p>
