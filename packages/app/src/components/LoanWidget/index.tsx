@@ -9,6 +9,7 @@ import IWithdrawalVaultFactory from "../../abis/IWithdrawalVaultFactory.json";
 import { MAINNET_CHAIN_ID, MAINNET_USDC_ADDRESS, WITHDRAWAL_VAULT_FACTORY_ADDRESS } from "../../utils/constants";
 
 interface Props {
+  userAddress: string | undefined;
   provider: Web3Provider | undefined;
   network: Network | undefined;
 }

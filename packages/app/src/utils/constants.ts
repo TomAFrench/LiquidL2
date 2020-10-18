@@ -1,3 +1,4 @@
+export const MATIC_RPC_URL = "https://rpc-mumbai.matic.today";
 export const MATIC_CHAIN_ID = 80001;
 export const MAINNET_CHAIN_ID = 5;
 export const MATIC_USDC_ADDRESS = "0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747";

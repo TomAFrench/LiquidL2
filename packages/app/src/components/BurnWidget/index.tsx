@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Network, Web3Provider } from "@ethersproject/providers";
+import { JsonRpcProvider, Network, Web3Provider } from "@ethersproject/providers";
 import { formatUnits, parseUnits } from "@ethersproject/units";
 import { TextField } from "@material-ui/core";
 import { BigNumberish, BigNumber } from "@ethersproject/bignumber";
@@ -14,9 +14,15 @@ import WithdrawalVault from "../../abis/WithdrawalVault.json";
 import IWithdrawalVaultFactory from "../../abis/IWithdrawalVaultFactory.json";
 import IERC20 from "../../abis/IERC20.json";
 
-import { MATIC_CHAIN_ID, MATIC_USDC_ADDRESS, WITHDRAWAL_VAULT_FACTORY_ADDRESS } from "../../utils/constants";
+import {
+  MATIC_CHAIN_ID,
+  MATIC_RPC_URL,
+  MATIC_USDC_ADDRESS,
+  WITHDRAWAL_VAULT_FACTORY_ADDRESS,
+} from "../../utils/constants";
 
 interface Props {
+  userAddress: string | undefined;
   provider: Web3Provider | undefined;
   network: Network | undefined;
 }
@@ -76,20 +82,20 @@ const calculateVaultAddress = (userAddress: string): string => {
   return vaultAddress;
 };
 
-const useUSDCBalance = (provider: Web3Provider | undefined): [BigNumber, () => void] => {
+const useUSDCBalance = (userAddress: string | undefined): [BigNumber, () => void] => {
   const [balance, setBalance] = useState<BigNumber>(Zero);
 
   const refreshBalance = useCallback(async (): Promise<void> => {
-    if (!provider) {
+    if (!userAddress) {
       setBalance(Zero);
       return;
     }
 
-    const userAddress = await provider.getSigner().getAddress();
+    const provider = new JsonRpcProvider(MATIC_RPC_URL);
     const usdcContract = new Contract(MATIC_USDC_ADDRESS, IERC20.abi, provider);
     const userBalance = await usdcContract.balanceOf(userAddress);
     setBalance(userBalance);
-  }, [provider]);
+  }, [userAddress]);
 
   useEffect(() => {
     refreshBalance();
@@ -98,14 +104,13 @@ const useUSDCBalance = (provider: Web3Provider | undefined): [BigNumber, () => v
   return [balance, refreshBalance];
 };
 
-const BurnWidget: React.FC<Props> = ({ provider, network }) => {
-  const [balance] = useUSDCBalance(provider);
+const BurnWidget: React.FC<Props> = ({ userAddress, provider, network }) => {
+  const [balance] = useUSDCBalance(userAddress);
   const [amount, setAmount] = useState<string>("0");
 
   const handleExit = async (withdrawalAmount: BigNumber): Promise<void> => {
-    if (!provider) return;
+    if (!provider || !userAddress) return;
 
-    const userAddress = await provider.getSigner().getAddress();
     const vaultAddress = calculateVaultAddress(userAddress);
 
     console.log("vaultAddress", vaultAddress);

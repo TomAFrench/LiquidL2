@@ -38,6 +38,7 @@ function WalletButton({
 }
 
 const HomePage: React.FC = () => {
+  const [userAddress, setUserAddress] = useState<string>();
   const [provider, setProvider] = useState<Web3Provider>();
   const [network, setNetwork] = useState<Network>();
 
@@ -59,7 +60,14 @@ const HomePage: React.FC = () => {
       if (provider) setNetwork(await provider.getNetwork());
     };
     getNetwork();
-  });
+  }, [provider]);
+
+  useEffect(() => {
+    const getUserAddress = async () => {
+      if (provider) setUserAddress(await provider.getSigner().getAddress());
+    };
+    getUserAddress();
+  }, [provider]);
 
   return (
     <div>
@@ -70,8 +78,8 @@ const HomePage: React.FC = () => {
         <Image src={logo} alt="react-logo" />
         <h2>Delegated Withdrawals</h2>
         <Widgets>
-          <BurnWidget provider={provider} network={network} />
-          <LoanWidget provider={provider} network={network} />
+          <BurnWidget userAddress={userAddress} provider={provider} network={network} />
+          <LoanWidget userAddress={userAddress} provider={provider} network={network} />
         </Widgets>
       </Body>
     </div>
