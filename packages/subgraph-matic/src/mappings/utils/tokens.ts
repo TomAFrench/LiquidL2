@@ -1,5 +1,5 @@
 import { Address } from '@graphprotocol/graph-ts';
-import { ChildToken } from '../../types/templates';
+import { ChildToken } from '../../types/ChildChainManager/ChildToken';
 
 export function getTokenName(childTokenAddress: Address): string {
   let collateralToken = ChildToken.bind(childTokenAddress);
@@ -15,7 +15,7 @@ export function getTokenSymbol(childTokenAddress: Address): string {
   return result.reverted ? '' : result.value;
 }
 
-export function getTokenDecimals(childTokenAddress: Address): BigInt {
+export function getTokenDecimals(childTokenAddress: Address): i32 {
   let collateralToken = ChildToken.bind(childTokenAddress);
   let result = collateralToken.try_decimals();
 

@@ -7,10 +7,11 @@ matic:
       address: '0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa'
       startBlock: 0
 mumbai:
+  networkName: matic
   contracts:
     ChildChainManager:
-      address: '0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa'
-      startBlock: 0
+      address: '0xb5505a6d998549090530911180f38aC5130101c6'
+      startBlock: 1332096
     WithdrawalVaultFactory:
-      address: '0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa'
-      startBlock: 0
+      address: '0xEA42e87443A27D88680057c4eF1d3325383d84C2'
+      startBlock: 5640146

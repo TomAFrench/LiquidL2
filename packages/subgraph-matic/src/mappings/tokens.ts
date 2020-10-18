@@ -20,5 +20,6 @@ export function handleTokenWithdrawal(event: Transfer): void {
   withdrawal.user = event.params.from;
   withdrawal.amount = event.params.value;
   withdrawal.childToken = event.address.toHexString();
+  withdrawal.timestamp = event.block.timestamp;
   withdrawal.save();
 }

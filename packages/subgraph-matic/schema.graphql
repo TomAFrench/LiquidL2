@@ -22,4 +22,5 @@ type Withdrawal @entity {
   user: Bytes!
   amount: BigInt!
   childToken: Token!
+  timestamp: BigInt!
 }
