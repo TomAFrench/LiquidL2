@@ -4,28 +4,28 @@ repository: https://github.com/hack-money/Delegated-Withdrawals/packages/subgrap
 schema:
   file: ./schema.graphql
 dataSources:
-  - kind: ethereum/contract
-    name: ChildChainManager
-    network: {{networkName}}
-    source:
-      abi: ChildChainManager
-      address: '{{contracts.ChildChainManager.address}}'
-      startBlock: {{contracts.ChildChainManager.startBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      abis:
-        - name: ChildChainManager
-          file: ./abis/ChildChainManager.json
-        - name: ChildToken
-          file: ./abis/ChildToken.json
-      entities:
-        - Token
-      eventHandlers:
-        - event: TokenMapped(indexed address,indexed address)
-          handler: handleTokenMapped
-      file: ./src/mappings/tokens.ts
-      language: wasm/assemblyscript
+  # - kind: ethereum/contract
+  #   name: ChildChainManager
+  #   network: {{networkName}}
+  #   source:
+  #     abi: ChildChainManager
+  #     address: '{{contracts.ChildChainManager.address}}'
+  #     startBlock: {{contracts.ChildChainManager.startBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.3
+  #     abis:
+  #       - name: ChildChainManager
+  #         file: ./abis/ChildChainManager.json
+  #       - name: ChildToken
+  #         file: ./abis/ChildToken.json
+  #     entities:
+  #       - Token
+  #     eventHandlers:
+  #       - event: TokenMapped(indexed address,indexed address)
+  #         handler: handleTokenMapped
+  #     file: ./src/mappings/tokens.ts
+  #     language: wasm/assemblyscript
   - kind: ethereum/contract
     name: WithdrawalVaultFactory
     network: {{networkName}}
@@ -48,19 +48,19 @@ dataSources:
           handler: handleTokenWithdrawal
       file: ./src/mappings/tokens.ts
       language: wasm/assemblyscript
-templates:
-  - name: ChildToken
-    kind: ethereum/contract
-    network: {{networkName}}
-    source:
-      abi: ChildToken
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      abis:
-        - name: ChildToken
-          file: ./abis/ChildToken.json
-      entities:
-        - Withdrawal
-      file: ./src/mappings/empty.ts
-      language: wasm/assemblyscript
+# templates:
+#   - name: ChildToken
+#     kind: ethereum/contract
+#     network: {{networkName}}
+#     source:
+#       abi: ChildToken
+#     mapping:
+#       kind: ethereum/events
+#       apiVersion: 0.0.3
+#       abis:
+#         - name: ChildToken
+#           file: ./abis/ChildToken.json
+#       entities:
+#         - Withdrawal
+#       file: ./src/mappings/empty.ts
+#       language: wasm/assemblyscript

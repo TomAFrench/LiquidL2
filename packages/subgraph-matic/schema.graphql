@@ -1,12 +1,12 @@
 ### Generic ###
 
-type Token @entity {
-  id: ID!
-  name: String!
-  decimals: Int!
-  symbol: String!
-  rootToken: Bytes!
-}
+# type Token @entity {
+#   id: ID!
+#   name: String!
+#   decimals: Int!
+#   symbol: String!
+#   rootToken: Bytes!
+# }
 
 # type Deposit @entity {
 #   "Transaction hash"
@@ -21,6 +21,6 @@ type Withdrawal @entity {
   id: ID!
   user: Bytes!
   amount: BigInt!
-  childToken: Token!
+  childToken: Bytes!
   timestamp: BigInt!
 }
