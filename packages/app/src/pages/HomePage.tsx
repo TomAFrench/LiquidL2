@@ -7,6 +7,7 @@ import { web3Modal, logoutOfWeb3Modal } from "../utils/web3Modal";
 import logo from "../ethereumLogo.png";
 import BurnWidget from "../components/BurnWidget";
 import LoanWidget from "../components/LoanWidget";
+import RepayWidget from "../components/RepayWidget";
 
 export const Widgets = styled.div`
   align-self: stretch;
@@ -80,6 +81,7 @@ const HomePage: React.FC = () => {
         <Widgets>
           <BurnWidget userAddress={userAddress} provider={provider} network={network} />
           <LoanWidget userAddress={userAddress} provider={provider} network={network} />
+          <RepayWidget userAddress={userAddress} provider={provider} network={network} />
         </Widgets>
       </Body>
     </div>

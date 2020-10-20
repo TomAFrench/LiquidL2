@@ -7,6 +7,7 @@ import { Border, Button } from "../common";
 import IWithdrawalVaultFactory from "../../abis/IWithdrawalVaultFactory.json";
 import {
   MAINNET_CHAIN_ID,
+  MAINNET_RPC_URL,
   MAINNET_USDC_ADDRESS,
   MATIC_RPC_URL,
   WITHDRAWAL_VAULT_FACTORY_ADDRESS,

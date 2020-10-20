@@ -1,4 +1,6 @@
-import { getCreate2Address, keccak256, solidityKeccak256 } from "ethers/lib/utils";
+import { getCreate2Address } from "@ethersproject/address";
+import { keccak256 } from "@ethersproject/keccak256";
+import { keccak256 as solidityKeccak256 } from "@ethersproject/solidity";
 import { defaultAbiCoder } from "@ethersproject/abi";
 import WithdrawalVault from "../abis/WithdrawalVault.json";
 import { WITHDRAWAL_VAULT_FACTORY_ADDRESS } from "./constants";
