@@ -95,6 +95,7 @@ const useUSDCBalance = (userAddress: string | undefined): [BigNumber, () => void
 const BurnWidget: React.FC<Props> = ({ userAddress, provider, network }) => {
   const [balance] = useUSDCBalance(userAddress);
   const [amount, setAmount] = useState<string>("0");
+  const [burnHash, setBurnHash] = useState<string>("");
 
   const handleExit = async (withdrawalAmount: BigNumber): Promise<void> => {
     if (!provider || !userAddress) return;
@@ -143,6 +144,8 @@ const BurnWidget: React.FC<Props> = ({ userAddress, provider, network }) => {
     );
 
     console.log("res", res);
+    await res.wait();
+    setBurnHash(res.hash);
   };
 
   return (
@@ -156,6 +159,7 @@ const BurnWidget: React.FC<Props> = ({ userAddress, provider, network }) => {
       >
         Withdraw
       </Button>
+      {burnHash && <p> Burn hash: {burnHash}</p>}
     </Border>
   );
 };
