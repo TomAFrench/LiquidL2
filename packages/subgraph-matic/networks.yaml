@@ -13,5 +13,5 @@ mumbai:
       address: '0xb5505a6d998549090530911180f38aC5130101c6'
       startBlock: 1332096
     WithdrawalVaultFactory:
-      address: '0xEA42e87443A27D88680057c4eF1d3325383d84C2'
-      startBlock: 5640146
+      address: '0xF944078c2546815Cd6efb939b6Dc502542F21f88'
+      startBlock: 5813836
