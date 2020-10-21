@@ -48,17 +48,21 @@ const RepayWidget: React.FC<Props> = ({ userAddress, provider, network }) => {
   return (
     <Border style={{ opacity: network?.chainId === MAINNET_CHAIN_ID ? 1 : 0.1 }}>
       <h2>Repay</h2>
-      {pendingWithdrawals.map(pendingWithdrawal => (
-        <>
-          <div>
-            {`Withdrawal: ${pendingWithdrawal.id.slice(0, 6)} - Amount: ${formatUnits(
-              pendingWithdrawal.amount,
-              6,
-            )} USDC`}
-            <Button onClick={(): Promise<void> => handleRepay(pendingWithdrawal.id)}>Repay</Button>
-          </div>
-        </>
-      ))}
+      {pendingWithdrawals.length === 0 ? (
+        <p>No pending withdrawals</p>
+      ) : (
+        pendingWithdrawals.map(pendingWithdrawal => (
+          <>
+            <div>
+              {`Withdrawal: ${pendingWithdrawal.id.slice(0, 6)} - Amount: ${formatUnits(
+                pendingWithdrawal.amount,
+                6,
+              )} USDC`}
+              <Button onClick={(): Promise<void> => handleRepay(pendingWithdrawal.id)}>Repay</Button>
+            </div>
+          </>
+        ))
+      )}
     </Border>
   );
 };
