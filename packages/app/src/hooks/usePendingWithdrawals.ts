@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { Zero } from "@ethersproject/constants";
 import { calculateVaultAddress } from "../utils/vaults";
 import { getWithdrawals } from "../graphql/withdrawals";
 
@@ -11,7 +10,7 @@ const usePendingWithdrawals = (userAddress: string | undefined): Withdrawal[] =>
 
   useEffect(() => {
     const getPendingWithdrawals = async () => {
-      if (!userAddress) return Zero;
+      if (!userAddress) return [];
       const withdrawals = await getWithdrawals(calculateVaultAddress(userAddress));
       setPendingWithdrawals(withdrawals);
     };
