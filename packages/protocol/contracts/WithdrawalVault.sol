@@ -63,7 +63,7 @@ contract WithdrawalVault is Ownable {
         repaymentAmount = amount < loans[address(asset)] ? amount : loans[address(asset)];
 
         // pay off borrowed balance from collateralVault
-        asset.approve(collateralVault, repaymentAmount)
+        asset.approve(collateralVault, repaymentAmount);
         aaveCollateralVaultProxy.repay(collateralVault, address(asset), repaymentAmount);
         loans[address(asset)] = loans[address(asset)].sub(repaymentAmount);
 
