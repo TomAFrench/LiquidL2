@@ -77,7 +77,7 @@ const HomePage: React.FC = () => {
       </Header>
       <Body>
         <Image src={logo} alt="react-logo" />
-        <h2>Delegated Withdrawals</h2>
+        <h2>LiquidL2</h2>
         <Widgets>
           <BurnWidget userAddress={userAddress} provider={provider} network={network} />
           <LoanWidget userAddress={userAddress} provider={provider} network={network} />

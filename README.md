@@ -1,10 +1,10 @@
-# Delegated Withdrawals
+# LiquidL2
 
 ## Motivation
 
 Onboarding and offboarding user funds is one of the main hurdles for products building on layer 2 solutions. As an example, withdrawals from Matic include a 30 minute wait period before funds are available on Ethereum. This problem is felt more strongly on optimistic rollups (often with a 7 day challenge period).
 
-Delegated Withdrawals is an incentivisation mechanism for lenders to delegate credit to users withdrawing funds from layer 2 collateralised by the expected income once their funds are available.
+LiquidL2 is an incentivisation mechanism for lenders to delegate credit to users withdrawing funds from layer 2 collateralised by the expected income once their funds are available.
 
 ## Withdrawals from Matic
 
@@ -54,5 +54,6 @@ The only risk which is taken on by the borrower is that it is not guaranteed tha
 
 There are a number of shortcuts necessary the time constraints of ETHOnline:
 
-- There's a very basic model of interest for the the loans.
+- Lending is currently a mug's game. There's no interest so there's no upside to taking on the risk of these loans.
 - Currently a single entity must back all loans given out by the platform. Ideally funds from multiple liquidity providers may be used such that they are still protected from bad debts.
+- A vault could automatically perform an action upon reaching a target credit limit through something like gelato.network such as automatically depositing the funds into another L2.
